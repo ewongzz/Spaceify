@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spotify Simple Visualization</title>
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <style>
+    svg {
+      background-color: #f0f0f0;
+      margin: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Spotify Top Tracks (Dummy Data)</h1>
+  <div id="chart"></div>
+
+  <script>
+    // Sample Data (representing tracks)
+    const data = [
+      { name: "Track 1", popularity: 90, duration: 240 },
+      { name: "Track 2", popularity: 80, duration: 210 },
+      { name: "Track 3", popularity: 60, duration: 200 },
+      { name: "Track 4", popularity: 70, duration: 220 }
+    ];
+
+    const width = 500;
+    const height = 300;
+
+    const svg = d3.select("#chart")
+                  .append("svg")
+                  .attr("width", width)
+                  .attr("height", height);
+
+    const xScale = d3.scaleLinear()
+                     .domain([0, 100])
+                     .range([50, width - 50]);
+
+    const yScale = d3.scaleLinear()
+                     .domain([150, 300])
+                     .range([height - 50, 50]);
+
+    svg.selectAll("circle")
+       .data(data)
+       .enter()
+       .append("circle")
+       .attr("cx", d => xScale(d.popularity))
+       .attr("cy", d => yScale(d.duration))
+       .attr("r", 20)
+       .attr("fill", "steelblue");
+
+    svg.selectAll("text")
+       .data(data)
+       .enter()
+       .append("text")
+       .attr("x", d => xScale(d.popularity))
+       .attr("y", d => yScale(d.duration) - 25)
+       .attr("text-anchor", "middle")
+       .text(d => d.name);
+  </script>
+</body>
+</html>
